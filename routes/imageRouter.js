@@ -27,20 +27,20 @@ imageRouter.use(bodyParser.json());
 imageRouter.route('/')
 .get((req, res, next) => {
     res.statusCode = 403;
-    res.end('GET operations not supported on /imageUploads');
+    res.end('GET operations not supported on /imageSteg');
 })
 .put((req, res, next) => {
     res.statusCode = 403;
-    res.end('PUT operations not supported on /imageUploads');
+    res.end('PUT operations not supported on /imageSteg');
 })
 .post(upload.single('imageFile'),(req, res) => {
     res.statusCode = 200;
-    res.setHeader('Conten-Type', 'application/json');
+    res.setHeader('Content-Type', 'application/json');
     res.json(req.file)
 })
 .delete((req, res, next) => {
     res.statusCode = 403;
-    res.end('DELETE operations not supported on /imageUploads');
+    res.end('DELETE operations not supported on /imageSteg');
 })
 
 module.exports = imageRouter;

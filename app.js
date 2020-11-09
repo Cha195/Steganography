@@ -10,9 +10,9 @@ const videoRouter = require('./routes/videoRouter');
 app.use(morgan('dev'));
 app.use(bodyparser.json());
 
-app.use('/imageUpload',imageRouter);
-app.use('/audioUpload',audioRouter);
-app.use('/videoUpload',videoRouter);
+app.use('/imageSteg',imageRouter);
+app.use('/audioSteg',audioRouter);
+app.use('/videoSteg',videoRouter);
 
 app.use((req,res,next) => {
     const error = new Error('Not Found');

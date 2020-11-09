@@ -1,57 +1,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <style>
-            body {
-                background-color: powderblue;
-                display: flex;
-                height: 100vh;
-                flex-direction: column;
-                justify-content: center;
-                align-items: center;
-                margin: 0px;
-            }
-            .forms {
-                display: flex;
-                flex-direction: column;
-                justify-content: center;
-                align-items: center;
-            }
-            h1 {
-                color: blue;
-                font-family: "roboto";
-            }
-            button {
-                background: none;
-                font-size: 20px;
-                padding: 10px 30px;
-                border-radius: 30px;
-                margin: 20px;
-                font-family: montserrat;
-                outline: none;
-                cursor: pointer;
-            }
-            span {
-                height: 2px;
-                width: 400px;
-                background: black;
-                margin-top: 10px;
-                margin-bottom: 10px;
-            }
-            input {
-                background: none;
-                font-size: 15px;
-                padding: 10px 10px;
-                border-radius: 5px;
-                margin: 10px;
-                font-family: montserrat;
-                outline: none;
-                cursor: pointer;
-            }
-            .submit {
-                background-color: greenyellow;
-            }
-        </style>
+        <link rel="stylesheet" href="./index.css">
         <title>Steganography</title>
     </head>
     <body>
@@ -59,64 +9,14 @@
         <span></span>
         <div>
             <div class="forms">
-                <button onclick="imagebutton()">Image</button>
-                <form id="imageform" action="/action_page.php"></form>
+                <a href="./imageSteg" style="background-color:#ccff00;">Image</a>
             </div>
             <div class="forms">
-                <button onclick="audiobutton()">Audio</button>
-                <form id="audioform" action="/action_page.php"></form>
+                <a  href="./audioSteg" style="background-color: #FF00CC;">Audio</a>
             </div>
             <div class="forms">
-                <button onclick="videobutton()">Video</button>
-                <form id="videoform" action="/action_page.php"></form>
+                <a href="./videoSteg" style="background-color: #15F4EE;">Video</a>
             </div>
         </div>
     </body>
-    <script>
-        var ib = false;
-        function imagebutton() {
-            console.log(ib);
-            if(ib === false) {
-                ib = true;
-                return(
-                document.getElementById("imageform").innerHTML = `<input type="file" id="myFile" name="filename">
-                                                                <input class="submit" type="submit">`
-                );
-            }
-            else {
-                ib = false;
-                return(document.getElementById("imageform").innerHTML = ``);
-            }
-        }
-        var ab = false;
-        function audiobutton() {
-            console.log(ab);
-            if(ab === false) {
-                ab = true;
-                return(
-                document.getElementById("audioform").innerHTML = `<input type="file" id="myFile" name="filename">
-                                                                <input class="submit" type="submit">`
-                );
-            }
-            else {
-                ab = false;
-                return(document.getElementById("audioform").innerHTML = ``);
-            }
-        }
-        var vb = false;
-        function videobutton() {
-            console.log(vb);
-            if(vb === false) {
-                vb = true;
-                return(
-                document.getElementById("videoform").innerHTML = `<input type="file" id="myFile" name="filename">
-                                                                <input class="submit" type="submit">`
-                );
-            }
-            else {
-                vb = false;
-                return(document.getElementById("videoform").innerHTML = ``);
-            }
-        }
-    </script>
 </html>
