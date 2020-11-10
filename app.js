@@ -14,6 +14,8 @@ app.use('/imageSteg',imageRouter);
 app.use('/audioSteg',audioRouter);
 app.use('/videoSteg',videoRouter);
 
+app.use(express.static("public"));
+
 app.use((req,res,next) => {
     const error = new Error('Not Found');
     error.status = 404;

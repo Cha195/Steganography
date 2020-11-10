@@ -1,6 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const multer = require('multer');
+const path = require('path');
 const spawn = require('child_process').spawn;
 
 const encodeStorage = multer.diskStorage({
@@ -34,6 +35,24 @@ const decodeUpload = multer({ storage: decodeStorage, fileFilter: videoFileFilte
 const videoRouter = express.Router();
 videoRouter.use(bodyParser.json());
 
+videoRouter.route('/')
+.get((req, res, next) => {
+    res.statusCode = 200;
+    res.sendFile('video.html',{root: path.join('./public')});
+})
+.put((req, res, next) => {
+    res.statusCode = 403;
+    res.end('PUT operations not supported on /videoSteg');
+})
+.post((req, res, next) => {
+    res.statusCode = 403;
+    res.end('POST operations not supported on /videoSteg');
+})
+.delete((req, res, next) => {
+    res.statusCode = 403;
+    res.end('DELETE operations not supported on /videoSteg');
+})
+
 videoRouter.route('/encode')
 .get((req, res, next) => {
     res.statusCode = 403;
@@ -47,7 +66,10 @@ videoRouter.route('/encode')
     res.statusCode = 200;
     res.setHeader('Content-Type', 'application/json');
     const process = spawn('python3',['./routes/Video.py',1,'./uploads/video/encode/',req.file.originalname,req.body.message]);
-    res.json(req.file);
+    process.stdout.on('data', data => {
+        console.log(data.toString());
+    })
+    res.send(`Your Stego video: <hr/><img src="./downloads/${req.file.originalname}" width="500"><hr />`);
 })
 .delete((req, res, next) => {
     res.statusCode = 403;
