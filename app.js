@@ -9,6 +9,7 @@ const videoRouter = require('./routes/videoRouter');
 
 app.use(morgan('dev'));
 app.use(bodyparser.json());
+app.set('view engine', 'ejs');
 
 app.use('/imageSteg',imageRouter);
 app.use('/audioSteg',audioRouter);

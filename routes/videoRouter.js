@@ -6,7 +6,7 @@ const spawn = require('child_process').spawn;
 
 const encodeStorage = multer.diskStorage({
     destination: (req, file, cb) => {
-        cb(null,'./uploads/video/encode')
+        cb(null,'./public/uploads/video/encode')
     },
     filename:  (req,file,cb) => {
         cb(null, file.originalname)
@@ -15,7 +15,7 @@ const encodeStorage = multer.diskStorage({
 
 const decodeStorage = multer.diskStorage({
     destination: (req, file, cb) => {
-        cb(null,'./uploads/video/decode')
+        cb(null,'./public/uploads/video/decode')
     },
     filename:  (req,file,cb) => {
         cb(null, file.originalname)
@@ -62,14 +62,14 @@ videoRouter.route('/encode')
     res.statusCode = 403;
     res.end('PUT operations not supported on /videoSteg');
 })
-.post(encodeUpload.single('videoFile'),(req, res) => {
+.post(encodeUpload.single('videoFile') ,(req, res) => {
+    const filePath = './public/downloads/video/' + req.file.originalname
     res.statusCode = 200;
-    res.setHeader('Content-Type', 'application/json');
-    const process = spawn('python3',['./routes/Video.py',1,'./uploads/video/encode/',req.file.originalname,req.body.message]);
-    process.stdout.on('data', data => {
-        console.log(data.toString());
+    const process = spawn('python3',['./routes/Video.py',1,'./public/uploads/video/encode/',req.file.originalname,req.body.message])
+    process.on('data', data => {
+        console.log(data)
     })
-    res.send(`Your Stego video: <hr/><img src="./downloads/${req.file.originalname}" width="500"><hr />`);
+    res.download(filePath)
 })
 .delete((req, res, next) => {
     res.statusCode = 403;
@@ -88,8 +88,7 @@ videoRouter.route('/decode')
 .post(decodeUpload.single('videoFile'),(req, res) => {
     res.statusCode = 200;
     res.setHeader('Content-Type', 'application/json');
-    const process = spawn('python3',['./routes/Video.py',2,`./uploads/video/decode/${req.file.originalname}`]);
-    res.json(req.file);
+    const process = spawn('python3',['./routes/Video.py',2,`./public/uploads/video/decode/${req.file.originalname}`]);
     process('data', data => {
         console.log(data.toString());
     });

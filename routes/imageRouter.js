@@ -6,7 +6,7 @@ const spawn = require('child_process').spawn;
 
 const encodeStorage = multer.diskStorage({
     destination: (req, file, cb) => {
-        cb(null,'./uploads/images/encode')
+        cb(null,'./public/uploads/images/encode')
     },
     filename:  (req,file,cb) => {
         cb(null, file.originalname)
@@ -15,7 +15,7 @@ const encodeStorage = multer.diskStorage({
 
 const decodeStorage = multer.diskStorage({
     destination: (req, file, cb) => {
-        cb(null,'./uploads/images/decode')
+        cb(null,'./public/uploads/images/decode')
     },
     filename:  (req,file,cb) => {
         cb(null, file.originalname)
@@ -63,10 +63,11 @@ imageRouter.route('/encode')
     res.end('PUT operations not supported on /imageSteg/encode');
 })
 .post(encodeUpload.single('imageFile'),(req, res) => {
+    const filePath = './public/downloads/images/' + req.file.originalname
     res.statusCode = 200;
     res.setHeader('Content-Type', 'application/json');
-    const process = spawn('python3',['./routes/Image.py',1,'./uploads/image/encode/',req.file.originalname,req.body.message]);
-    res.json(req.file);
+    const process = spawn('python3',['./routes/Image.py',1,'./public/uploads/image/encode/',req.file.originalname,req.body.message]);
+    res.download(filePath);
 })
 .delete((req, res, next) => {
     res.statusCode = 403;
@@ -85,7 +86,7 @@ imageRouter.route('/decode')
 .post(decodeUpload.single('imageFile'),(req, res) => {
     res.statusCode = 200;
     res.setHeader('Content-Type', 'application/json');
-    const process = spawn('python3',['./routes/Image.py',2,`./uploads/image/decode/${req.file.originalname}`]);
+    const process = spawn('python3',['./routes/Image.py',2,`./public/uploads/images/decode/${req.file.originalname}`]);
     res.send(`Original image: ${req.file.path} Message: ${req.body.message}`);
     process('data', data => {
         console.log(data.toString());

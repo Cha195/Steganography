@@ -6,7 +6,7 @@ const spawn = require('child_process').spawn;
 
 const encodeStorage = multer.diskStorage({
     destination: (req, file, cb) => {
-        cb(null,'./uploads/audio/encode')
+        cb(null,'./public/uploads/audio/encode')
     },
     filename:  (req,file,cb) => {
         cb(null, file.originalname)
@@ -15,7 +15,7 @@ const encodeStorage = multer.diskStorage({
 
 const decodeStorage = multer.diskStorage({
     destination: (req, file, cb) => {
-        cb(null,'./uploads/audio/decode')
+        cb(null,'./public/uploads/audio/decode')
     },
     filename:  (req,file,cb) => {
         cb(null, file.originalname)
@@ -63,10 +63,11 @@ audioRouter.route('/encode')
     res.end('PUT operations not supported on /audioSteg');
 })
 .post(encodeUpload.single('audioFile'),(req, res) => {
+    const filePath = './public/downloads/audio/' + req.file.originalname
     res.statusCode = 200;
     res.setHeader('Content-Type', 'application/json');
-    const process = spawn('python3',['./routes/Audio.py', 1, './uploads/audio/encode/', req.file.originalname, req.body.message]);
-    res.json(req.file);
+    const process = spawn('python3',['./routes/Audio.py', 1, './public/uploads/audio/encode/', req.file.originalname, req.body.message]);
+    res.download(filePath);
 })
 .delete((req, res, next) => {
     res.statusCode = 403;
@@ -85,7 +86,7 @@ audioRouter.route('/decode')
 .post(decodeUpload.single('audioFile'),(req, res) => {
     res.statusCode = 200;
     res.setHeader('Content-Type', 'application/json');
-    const process = spawn('python3',['./routes/Audio.py',2,`./uploads/audio/decode/${req.file.originalname}`]);
+    const process = spawn('python3',['./routes/Audio.py',2,`./public/uploads/audio/decode/${req.file.originalname}`]);
     res.json(req.file);
     process('data', data => {
         console.log(data.toString());
